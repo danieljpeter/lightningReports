@@ -1,0 +1,7 @@
+<aura:component >
+	<aura:registerEvent name="rLoadEvent" type="LIGHTNINGREPORT:reportLoadEvent"/>   
+	<aura:attribute name="report" type="Report"/>
+    <li class="ui-screen-hidden">
+        <a href="javascript:void(0);" onclick="{!c.showReport}">{!v.report.Name}</a>
+    </li>    
+</aura:component>

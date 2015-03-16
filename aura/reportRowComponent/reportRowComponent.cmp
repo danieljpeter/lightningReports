@@ -1,0 +1,22 @@
+<aura:component >
+	<aura:attribute name="row" type="Object[]"/>
+    <aura:attribute name="isHeader" type="Boolean"/>
+
+    <tr>
+        <aura:iteration var="cell" items="{!v.row}">
+            <aura:renderIf isTrue="{!v.isHeader}">
+                <th class="cell">{!cell.fieldLabel}</th>
+                <aura:set attribute="else">
+                    <td class="cell">
+                    	<aura:renderIf isTrue="{!cell.isHyperLink}">
+                            <LIGHTNINGREPORT:sobjectHyperlink sObjectId="{!cell.fieldValue}" hyperlinkLabel="{!cell.fieldLabel}"/>
+                        	<aura:set attribute="else">{!cell.fieldLabel}</aura:set>                        
+						</aura:renderIf>                        
+                    </td>  
+                </aura:set>
+            </aura:renderIf>
+            
+        </aura:iteration>
+    </tr>       
+
+</aura:component>

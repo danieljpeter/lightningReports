@@ -1,0 +1,29 @@
+<aura:component >
+	<aura:attribute name="group" type="Object"/>
+    
+    <tr>
+        <td class="group cell" colspan="{!v.group.fieldsInGroup}">
+            <b>{!v.group.fieldName}: </b>
+            <aura:renderIf isTrue="{!v.group.isHyperLink}">
+                <LIGHTNINGREPORT:sobjectHyperlink sObjectId="{!v.group.fieldValue}" hyperlinkLabel="{!v.group.fieldLabel}"/>
+                <aura:set attribute="else">{!v.group.fieldLabel}</aura:set>                        
+            </aura:renderIf>            
+        </td>
+    </tr>
+    
+    <aura:iteration var="row" items="{!v.group.fieldDataList}">  
+        <tr>
+            <aura:iteration var="cell" items="{!row}">
+                <td class="cell">
+                    <aura:renderIf isTrue="{!cell.isHyperLink}">
+                        <LIGHTNINGREPORT:sobjectHyperlink sObjectId="{!cell.fieldValue}" hyperlinkLabel="{!cell.fieldLabel}"/>
+                        <aura:set attribute="else">{!cell.fieldLabel}</aura:set>                        
+                    </aura:renderIf>                            
+                </td>
+            </aura:iteration>
+        </tr>
+    </aura:iteration>
+
+        
+
+</aura:component>

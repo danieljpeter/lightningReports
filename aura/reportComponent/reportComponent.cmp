@@ -1,0 +1,64 @@
+<aura:component controller="LIGHTNINGREPORT.LightningReportsController" implements="force:appHostable">
+
+    <!-- Handle component initialization in a client-side controller -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <!-- Handle loading events by displaying a spinner -->
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    
+    <!-- Handle loading a report which was clicked on -->
+	<aura:handler event="LIGHTNINGREPORT:reportLoadEvent" action="{!c.loadReport}"/>    
+
+    <!-- load all the reports for search -->
+    <aura:attribute name="reportList" type="Report[]"/>
+    
+    <!-- Dynamically load the report rows -->
+    <aura:attribute name="reportResponse" type="Object"/>    
+    
+    <div><center><ui:spinner aura:id="spinner"/></center></div>
+   
+    <div data-role="page" data-theme="d" id="reportPage">   
+		<div role="main" class="ui-content">    
+            
+            <ul data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="Search reports..." data-inset="true">
+                <aura:iteration var="report" items="{!v.reportList}">
+					<LIGHTNINGREPORT:reportSearchComponent report="{!report}" />
+                </aura:iteration>
+            </ul>
+            
+            <!-- this is how tabular and matrix reports are displayed -->
+            <!-- Iterate over the list of report rows and display them -->
+            <!-- special case for the header row -->
+            <table data-role="table" data-mode="columntoggle" id="report-table" class="custom-reponsive table-stroke">
+                
+                <aura:renderIf isTrue="{!v.reportResponse.reportType == 'summary' ? false : true}">
+                    <thead>
+                        <LIGHTNINGREPORT:reportRowComponent row="{!v.reportResponse.tabResp.reportFields}" isHeader="true"/>
+                    </thead>
+                    <tbody>
+                        <aura:iteration var="row" items="{!v.reportResponse.tabResp.fieldDataList}">
+                            <LIGHTNINGREPORT:reportRowComponent row="{!row}" isHeader="false"/>
+                        </aura:iteration>
+                    </tbody>
+                    <aura:set attribute="else">
+                        <!-- this is how summary reports are displayed -->
+                        <thead>
+                            <LIGHTNINGREPORT:reportRowComponent row="{!v.reportResponse.sumResp.reportFields}" isHeader="true"/>
+                        </thead>
+                        <tbody>
+                            <aura:iteration var="group" items="{!v.reportResponse.sumResp.groupList}">
+                                <LIGHTNINGREPORT:reportGroupComponent group="{!group}"/>
+                            </aura:iteration>
+                        </tbody>
+                        
+                    </aura:set>
+                </aura:renderIf>   
+                
+            </table>
+                
+
+        </div>
+    </div>     
+    
+</aura:component>

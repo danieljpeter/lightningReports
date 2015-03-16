@@ -1,0 +1,5 @@
+<aura:component >
+	<aura:attribute name="sObjectId" type="Id" />
+    <aura:attribute name="hyperlinkLabel" type="String" />
+	<a href="javascript:void(0);" onclick="{!c.navigateToSObject}">{!v.hyperlinkLabel}</a>
+</aura:component>
